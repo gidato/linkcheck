@@ -1,0 +1,117 @@
+.badge,
+.pill {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+}
+
+.pill {
+  padding-right: 0.6em;
+  padding-left: 0.6em;
+  border-radius: 0.5rem;
+  margin-right: 1em;
+}
+
+.error {
+  color: #212529;
+  background-color: #f6993f;
+}
+
+.redirect {
+  color: #212529;
+  background-color: #f6993f;
+}
+
+.success {
+  color: #fff;
+  background-color: #28a745;
+}
+
+.blue {
+  color: #fff;
+  background-color: #0062cc;
+}
+
+.warning {
+  color: #212529;
+  background-color: #ffc107;
+}
+
+.danger {
+  color: #fff;
+  background-color: #bd2130;
+}
+
+.gray {
+  color: #fff;
+  background-color: #545b62;
+}
+
+.small {
+  font-size: 80%;
+}
+
+.indent {
+  padding-left: 30px;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+body {
+  font-family: Helvetica;
+  font-size: 12px;
+}
+
+table {
+  width: 100%;
+}
+
+td {
+  padding: 3px;
+}
+
+th {
+  font-weight: bold;
+  text-align: left;
+}
+
+.border-top td {
+  border-top: 1px solid #000;
+}
+
+.border-light td {
+  border-color: #dee2e6;
+}
+
+h3 {
+  color: #f8f9fa;
+  background-color: #343a40;
+  padding: 0.5rem 0.25rem;
+}
+
+h4 {
+  background-color: #f8f9fa;
+  padding: 0.5rem 0.25rem;
+  border-top: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+}
+
+div.header-box {
+  background-color: #f8f9fa;
+  padding: 0.5rem 0.25rem;
+  border-top: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+}
+

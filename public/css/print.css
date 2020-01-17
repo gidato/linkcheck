@@ -1,0 +1,8 @@
+button.dropdown {
+  display: none;
+}
+
+.collapse:not(.show) {
+  display: inherit;
+}
+

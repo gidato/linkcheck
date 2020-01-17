@@ -1,0 +1,51 @@
+<html>
+  <head>
+      <title>Sample Html</title>
+      <!-- client side redirect -->
+      <meta http-equiv="refresh" content="0;URL='http://example.com/refresh'" />
+      <!-- examples in head section (single url) -->
+      <link href="/components/font-awesome/css/all.min.css" media="screen" rel="stylesheet" type="text/css">
+      <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/icon.png">
+      <!-- examples in head section (style) -->
+      <style>
+          .bg { background: url(/images/bg.jpeg);}
+      </style>
+  </head>
+  <body>
+      <div>
+          <!-- example MULTIPLE URLs, and single url on same tag -->
+          <!-- from https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images -->
+          <img class="brand"
+               srcset="elva-fairy-480w.jpg 480w,
+                       elva-fairy-800w.jpg 800w"
+               sizes="(max-width: 600px) 480px, 800px"
+               src="elva-fairy-800w.jpg" alt="Elva dressed as a fairy"
+          >
+     </div>
+
+     <div>
+         <a href="http://bbc.co.uk" target="_blank">BBC</a>         <!-- example with Target -->
+         <a href="about-us">About Us</a>                    <!-- and without target -->
+     </div>
+
+     <div>
+        <!-- example forms -->
+        <form action="search" method="post">
+             <input type="text" name="search">
+        </form>
+
+        <form>
+            <select name="jumpto">
+            </select>
+        </form>
+    </div>
+
+    <div style="background: url(/images/bg.png)">
+        Inline Style
+    </div>
+
+    <!-- inline script -->
+    <script>
+        import "somefile.js";
+        alert('hello world');
+    </script>
