@@ -70,7 +70,9 @@ trait ContainerExtensions
             $abstract,
             function($container, $params = []) use ($abstract, $factoryClass) {
                 $factory = new $factoryClass;
-                if (!$factory instanceof ContainerFactory)
+                if (!$factory instanceof ContainerFactory) {
+                    throw new \Exception('Invalid conatiner factory');
+                }
                 return $factory($container, $abstract, $params);
             },
             $shared
