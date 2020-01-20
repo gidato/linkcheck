@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Service\UrlAttribute;
+namespace App\Support\Service\Scan\ContentHandler\LinkExtractor\Html;
 
 use Interop\Container\ContainerInterface;
 use App\Service\UriGenerator;
