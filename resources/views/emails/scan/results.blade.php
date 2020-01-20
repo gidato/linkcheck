@@ -42,7 +42,8 @@
 
     @if ($scan->hasHtmlErrors())
         <p style="color:#c00000;font-weight:bold">HTML ERRORS FOUND</p>
-        <table style="font-family: arial;font-size:13px;color: #444;">
+        <p>The following pages have HTML errors</p>
+        <table style="margin-left:30px; font-family: arial;font-size:13px;color: #444;">
             @foreach($scan->getHtmlErrors() as $page)
                 <tr>
                     <td style="font-weight:bold; padding-top:10px;">
@@ -55,11 +56,12 @@
 
     @if ($scan->hasRedirects())
         <p style="color:#c00000;font-weight:bold">PAGE REDIRECTS FOUND</p>
-        <table style="font-family: arial;font-size:13px;color: #444;">
+        <table style="margin-left:30px; font-family: arial;font-size:13px;color: #444;">
             @foreach($scan->getRedirects() as $page)
                 <tr>
                     <td style="font-weight:bold; padding-top:10px;">
                         {{ $page->status_code }}
+                        {{ $page->getStatusText() }}:
                     </td>
                     <td style="font-weight:bold; padding-top:10px;">
                         {{ $page->getShortUrl() }}
