@@ -48,7 +48,7 @@ class Scan extends Model
 
     public function getHtmlErrors()
     {
-        return $this->pages->where('checked',true)->where('mime_type','text/html')->where('html_errors','<>', '[]');
+        return $this->pages->where('checked',true)->where('mime_type','text/html')->where('html_errors','<>', '[]')->where('is_external', 0);
     }
 
     public function hasRedirects() : bool

@@ -56,7 +56,7 @@
     @if ($scan->hasRedirects())
         <p style="color:#c00000;font-weight:bold">PAGE REDIRECTS FOUND</p>
         <table style="font-family: arial;font-size:13px;color: #444;">
-            @foreach($scan->getHtmlErrors() as $page)
+            @foreach($scan->getRedirects() as $page)
                 <tr>
                     <td style="font-weight:bold; padding-top:10px;">
                         {{ $page->status_code }}
