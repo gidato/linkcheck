@@ -28,7 +28,7 @@ class Scan extends Model
 
     public function isComplete() : bool
     {
-        return ('success' == $this->status || 'errors' == $this->status || 'aborted' == $this->status);
+        return ('success' == $this->status || 'errors' == $this->status || 'aborted' == $this->status || 'warnings' == $this->status);
     }
 
     public function hasLinkErrors() : bool

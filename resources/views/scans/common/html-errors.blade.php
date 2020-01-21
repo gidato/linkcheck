@@ -35,7 +35,7 @@
                         {{ $page->status_code }}
                     </span>
                 @endif
-                <a href="{{ $page->url }}">{{ $page->getShortUrl() }}</a> <i class="las la-external-link-alt"></i>
+                <a href="{{ $page->url }}" target="_blank">{{ $page->getShortUrl() }}</a> <i class="las la-external-link-alt"></i>
             </div>
             <div class="col-2 col-md-1 text-center">{{ $page->depth }}</div>
             <div class="col-4 col-md-1 text-center">{{ Str::upper($page->method) }}</div>
