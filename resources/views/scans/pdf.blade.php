@@ -1,7 +1,7 @@
 @extends('layouts.pdf')
 
 @php
-    $colors = ['errors' => 'danger', 'queued' => 'orange', 'processing' => 'orange', 'success' => 'success', 'warnings' => 'warning'];
+    $colors = ['errors' => 'danger', 'warnings' => 'danger', 'queued' => 'orange', 'processing' => 'orange', 'success' => 'success', 'warnings' => 'warning'];
     $site = $scan->site;
     $status = $scan->status;
     $color = $colors[$status];
