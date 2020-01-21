@@ -91,14 +91,9 @@
 
                 </div>
 
-                @if ($scan->isComplete())
-                    <a href="#" class="card-link">Email User</a>
-                    <a href="#" class="card-link">Email Owners</a>
-                    @if ($scan->hasLinkErrors())
-                        <a href="#" class="card-link">Rescan error pages</a>
-                        <a href="#" class="card-link">Rescan referring pages</a>
-                    @endif
-                @endif
+                @include('scans.common.summary', ['scan' => $scan])
+                @include('scans.common.card-links', ['scan' => $scan])
+                @include('scans.common.card-link-forms', ['scan' => $scan])
             </div>
         </div>
 
