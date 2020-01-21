@@ -58,7 +58,7 @@ class PageProcessorTest extends TestCase
         $page = $this->page;
 
         $response = Mockery::mock(HttpResponse::class);
-        $response->shouldReceive('getStatusCode')->once()->andReturn(200);
+        $response->shouldReceive('getStatusCode')->andReturn(200);
         $response->shouldReceive('getHeader')->once()->with('X-Guzzle-Redirect-History')->andReturn([]);
         $response->shouldReceive('getHeader')->once()->with('X-Guzzle-Redirect-Status-History')->andReturn([]);
         $response->shouldReceive('getHeader')->twice()->with('Content-Type')->andReturn(['text/html; charsetUTF-8;']);
@@ -83,7 +83,7 @@ class PageProcessorTest extends TestCase
         $page = $this->page;
 
         $response = Mockery::mock(HttpResponse::class);
-        $response->shouldReceive('getStatusCode')->once()->andReturn(200);
+        $response->shouldReceive('getStatusCode')->andReturn(200);
         $response->shouldReceive('getHeader')->once()->with('X-Guzzle-Redirect-History')->andReturn(['http://link1.com/','http://link2.com/']);
         $response->shouldReceive('getHeader')->once()->with('X-Guzzle-Redirect-Status-History')->andReturn([301, 302]);
         $response->shouldReceive('getHeader')->twice()->with('Content-Type')->andReturn(['text/html; charsetUTF-8;']);
@@ -129,9 +129,11 @@ class PageProcessorTest extends TestCase
         $page = $this->page;
 
         $response = Mockery::mock(HttpResponse::class);
-        $response->shouldReceive('getStatusCode')->once()->andReturn(404);
-        $response->shouldReceive('getHeader')->once()->with('X-Guzzle-Redirect-History')->andReturn([]);
-        $response->shouldReceive('getHeader')->once()->with('X-Guzzle-Redirect-Status-History')->andReturn([]);
+        $response->shouldReceive('getStatusCode')->andReturn(404);
+
+        // don't check redirect if status is not 200
+        $response->shouldReceive('getHeader')->never()->with('X-Guzzle-Redirect-History');
+        $response->shouldReceive('getHeader')->never()->with('X-Guzzle-Redirect-Status-History');
 
         $httpClient = Mockery::mock(HttpClient::class);
         $httpClient->shouldReceive('getPage')->with($page)->andReturn($response);
@@ -153,7 +155,7 @@ class PageProcessorTest extends TestCase
         $page = $this->page;
 
         $response = Mockery::mock(HttpResponse::class);
-        $response->shouldReceive('getStatusCode')->once()->andReturn(200);
+        $response->shouldReceive('getStatusCode')->andReturn(200);
         $response->shouldReceive('getHeader')->once()->with('X-Guzzle-Redirect-History')->andReturn([]);
         $response->shouldReceive('getHeader')->once()->with('X-Guzzle-Redirect-Status-History')->andReturn([]);
         $response->shouldReceive('getHeader')->twice()->with('Content-Type')->andReturn(['text/html; charsetUTF-8;']);
@@ -181,7 +183,7 @@ class PageProcessorTest extends TestCase
         $page->is_external = true;
 
         $response = Mockery::mock(HttpResponse::class);
-        $response->shouldReceive('getStatusCode')->once()->andReturn(200);
+        $response->shouldReceive('getStatusCode')->andReturn(200);
         $response->shouldReceive('getHeader')->once()->with('X-Guzzle-Redirect-History')->andReturn([]);
         $response->shouldReceive('getHeader')->once()->with('X-Guzzle-Redirect-Status-History')->andReturn([]);
         $response->shouldReceive('getHeader')->with('Content-Type')->andReturn(['text/html; charsetUTF-8;']);
