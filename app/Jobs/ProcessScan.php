@@ -14,6 +14,9 @@ class ProcessScan implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    // seconds allowed to run the job
+    public $timeout = 20 * 60; // 20 seconds - each page takes a second due to one second delays between checks
+
     private $scan;
 
     public function __construct(Scan $scan)
