@@ -39,7 +39,10 @@ class PageProcessor implements PageProcessorInterface
                 throw new \Exception('Not implemented');
         }
 
-        $page = $this->processRedirects($page, $response);
+        if ($response->getStatusCode() == 200) {
+            // only handle redirects if the redirect was ultimately found
+            $page = $this->processRedirects($page, $response);
+        }
 
         $page->status_code = $response->getStatusCode();
         $page->checked = true;
