@@ -6,7 +6,9 @@
             Delete
         </a>
 
-        <a href="{{ route('scans.show', $scan) }}" class="card-link">View Detail</a>
+        @if (!($excludeView ?? false))
+            <a href="{{ route('scans.show', $scan) }}" class="card-link">View Detail</a>
+        @endif
 
         @if ($scan->isComplete())
             <a href="#" class="card-link"

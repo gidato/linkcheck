@@ -91,10 +91,10 @@
 
                 </div>
 
-                @include('scans.common.summary', ['scan' => $scan])
-                @include('scans.common.card-links', ['scan' => $scan])
-                @include('scans.common.card-link-forms', ['scan' => $scan])
+
             </div>
+            @include('scans.common.card-links', ['scan' => $scan, 'excludeView' => true])
+            @include('scans.common.card-link-forms', ['scan' => $scan])
         </div>
 
         <div class="card mb-3 border-{{ $color }}">
