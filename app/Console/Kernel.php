@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command(GarbageCollectionPdfs::class)->dailyAt("02:30");
         $schedule->command(GarbageCollectionScans::class)->dailyAt("02:30");
-        if (!$this->osProcessIsRunning('queue:work')) {
+        if ($this->howManyTimesIsOsProcessIsRunning('queue:work') < config('queue.workers')) {
             // this will only run, when not already running
             // and locks up the command, so probably should go last in the list of scheduled jobs
             $schedule->command('queue:work')->everyMinute();
@@ -49,7 +49,7 @@ class Kernel extends ConsoleKernel
     }
 
 
-    protected function osProcessIsRunning($needle) : bool
+    protected function howManyTimesIsOsProcessIsRunning($needle) : bool
     {
         // get process status. the "-ww"-option is important to get the full output!
         exec('ps aux -ww', $process_status);
@@ -59,7 +59,6 @@ class Kernel extends ConsoleKernel
             return strpos($var, $needle);
         });
 
-        // if the result is not empty, the needle exists in running processes
-        return (!empty($result));
+        return $result->count();
     }
 }
