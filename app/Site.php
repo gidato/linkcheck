@@ -31,6 +31,11 @@ class Site extends Model
         return $this->morphMany(Filter::class, 'filterable');
     }
 
+    public function approvedRedirects()
+    {
+        return $this->hasMany(ApprovedRedirect::class);
+    }
+
     public function getUrlAttribute($value)
     {
         if (!empty($this->cache['url'])) {

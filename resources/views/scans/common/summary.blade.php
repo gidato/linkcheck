@@ -19,9 +19,9 @@
                 There are <strong>{{ $scan->getHtmlErrors()->count() }}</strong> HTML pages with errors.
             </p>
         @endif
-        @if ($scan->hasRedirects())
+        @if ($scan->hasUnapprovedRedirects())
             <p>
-                There are <strong>{{ $scan->getRedirects()->count() }}</strong> links that have been redirected to other pages.
+                There are <strong>{{ $scan->getUnapprovedRedirects()->count() }}</strong> links that have been redirected to other pages and have not been approved as appropriate redirects.
             </p>
         @endif
 

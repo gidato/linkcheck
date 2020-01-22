@@ -41,6 +41,7 @@ class SettingsTest extends TestCase
         $response->assertSeeText('Owners');
         $response->assertSeeText('Filter');
         $response->assertSeeText('Page Throttling');
+        $response->assertSeeText('Approved Redirects');
 
     }
 }

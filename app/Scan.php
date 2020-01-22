@@ -51,16 +51,30 @@ class Scan extends Model
         return $this->pages->where('checked',true)->where('mime_type','text/html')->where('html_errors','<>', '[]')->where('is_external', 0);
     }
 
-    public function hasRedirects() : bool
+    public function hasUnapprovedRedirects() : bool
     {
-        return ($this->getRedirects()->count() > 0);
+        return ($this->getUnapprovedRedirects()->count() > 0);
+    }
+
+    public function getUnapprovedRedirects()
+    {
+        return $this->getRedirects()->where('redirect_approved', false);
+    }
+
+    public function hasApprovedRedirects() : bool
+    {
+        return ($this->getApprovedRedirects()->count() > 0);
+    }
+
+    public function getApprovedRedirects()
+    {
+        return $this->getRedirects()->where('redirect_approved', true);
     }
 
     public function getRedirects()
     {
         return $this->pages->where('checked',true)->whereIn('status_code',[301, 302, 303, 304, 305, 306, 307, 308]);
     }
-
 
     public function hasBeenAborted() : bool
     {
@@ -74,6 +88,6 @@ class Scan extends Model
 
     public function getWarnings()
     {
-        return $this->getRedirects()->merge($this->getHtmlErrors());
+        return $this->getUnapprovedRedirects()->merge($this->getHtmlErrors());
     }
 }

@@ -26,6 +26,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('sites/{site}', 'SitesController@settings')->name('sites.settings');
     Route::get('sites/{site}/filters', 'SitesController@editFilters')->name('filters.edit');
     Route::patch('sites/{site}/filters', 'SitesController@updateFilters')->name('filters.update');
+    Route::get('sites/{site}/redirects', 'ApprovedRedirectController@index')->name('sites.redirects.list');
+    Route::delete('sites/{site}/redirects/{redirect}', 'ApprovedRedirectController@delete')->name('sites.redirects.delete');
+    Route::post('sites/{site}/redirects', 'ApprovedRedirectController@store')->name('sites.redirects.approve');
     Route::get('sites/{site}/throttling', 'SitesController@editThrottling')->name('throttling.edit');
     Route::patch('sites/{site}/throttling', 'SitesController@updateThrottling')->name('throttling.update');
     Route::patch('sites/{site}/verification-refresh', 'SitesController@refreshVerificationCode')->name('verification.refresh');

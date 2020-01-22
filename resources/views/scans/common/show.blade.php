@@ -73,10 +73,10 @@
 
                     <div class="row">
                         <div class="col-md-2">
-                            Pages with redirects:
+                            Pages with unapproved redirects:
                         </div>
                         <div class="col">
-                            {{ $scan->getRedirects()->count() }}
+                            {{ $scan->getUnapprovedRedirects()->count() }}
                         </div>
                     </div>
 
@@ -111,8 +111,8 @@
                 <h5 class="bg-light py-2 px-1">HTML Errors</h5>
                 @include('scans.common.html-errors', ['pages' => $scan->getHtmlErrors()->sortBy('url')])
 
-                <h5 class="bg-light py-2 px-1">Redirects</h5>
-                @include('scans.common.detail', ['pages' => $scan->getRedirects()->sortBy('url')])
+                <h5 class="bg-light py-2 px-1">Unapproved Page Redirects</h5>
+                @include('scans.common.detail', ['pages' => $scan->getUnapprovedRedirects()->sortBy('url')])
 
                 <h4 class="bg-dark text-light py-2 px-1">Successfully Checked Links</h4>
                 <h5 class="bg-light py-2 px-1">Internal HTML pages</h5>
@@ -147,6 +147,13 @@
                                     ->sortBy('url')
                 ])
 
+                <h5 class="bg-light py-2 px-1">Approved Redirects on Internal Pages</h5>
+                @include('scans.common.detail', [
+                    'pages' => $scan->getApprovedRedirects()
+                                    ->where('is_external', false)
+                                    ->sortBy('url')
+                ])
+
                 <h5 class="bg-light py-2 px-1">External HTML pages</h5>
                 @include('scans.common.detail', [
                     'pages' => $scan->pages
@@ -176,6 +183,13 @@
                                         return 'image/' !== substr($item->mime_type,0,6)
                                             && $item->mime_type != 'text/html';
                                     })
+                                    ->sortBy('url')
+                ])
+
+                <h5 class="bg-light py-2 px-1">Approved Redirects on External Pages</h5>
+                @include('scans.common.detail', [
+                    'pages' => $scan->getApprovedRedirects()
+                                    ->where('is_external', true)
                                     ->sortBy('url')
                 ])
 

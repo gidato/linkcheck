@@ -201,6 +201,20 @@ class PagesTableSeeder extends Seeder
             'updated_at' => now()
         ]);
 
+        DB::table('pages')->insert([
+            'scan_id' => 4,
+            'url' => SEED_SITE_3 . '/faqs',
+            'method' => 'get',
+            'is_external' => false,
+            'checked' => true,
+            'depth' => 1,
+            'mime_type' => null,
+            'status_code' => 302,
+            'redirect' => SEED_SITE_3 . '/faq',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
         DB::table('page_references')->insert([
             'referrer_id' => 7,
             'referred_id' => 7,

@@ -30,6 +30,17 @@
                 <a href="{{ $page->url }}" target="_blank">{{ $page->getShortUrl() }}</a> <i class="las la-external-link-alt"></i>
                 @if ($page->isRedirect())
                     redirected to {{ $page->getShortRedirectUrl() }}
+                    @if (!$page->redirect_approved)
+                        <form class="d-inline-block" action="{{route('sites.redirects.approve', $site) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="from_url" value="{{ $page->url }}">
+                            <input type="hidden" name="to_url" value="{{ $page->redirect }}">
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                <i class="las la-check"></i>
+                                <span class="d-none d-md-inline-block">APPROVE</span>
+                            </button>
+                        </form>
+                    @endif
                 @endif
             </div>
             <div class="col-2 col-md-1 text-center">{{ $page->depth }}</div>
