@@ -26,6 +26,11 @@ class FailedJobsController extends Controller
             json_encode($this->resetAttempts($job->payload)), $job->queue
         );
 
+        if (property_exists($job->command,'scan')) {
+            $job->command->scan->message = null;
+            $job->command->scan->save();
+        }
+
         $request->session()->flash('success', "The failed job [{$job->id}] has been pushed back onto the queue!");
         $job->delete();
         return redirect(route('failed-jobs.list'));

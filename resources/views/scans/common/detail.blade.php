@@ -32,7 +32,7 @@
                     redirected to {{ $page->getShortRedirectUrl() }}
                 @endif
             </div>
-            <div class="col-2">
+            <div class="col-2 col-md-1">
                 @if ($page->isRedirect())
                     @if (!$page->redirect_approved)
                         <form class="d-inline-block" action="{{route('sites.redirects.approve', $site) }}" method="POST">
