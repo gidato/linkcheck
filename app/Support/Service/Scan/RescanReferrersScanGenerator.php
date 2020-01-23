@@ -24,7 +24,7 @@ class RescanReferrersScanGenerator
         // set errored pages as "not checked";
         foreach ($newScan->pages as $page)
         {
-            if ($page->isError()) {
+            if ($page->isError() || ($page->isRedirect() && !$page->redirect_approved)) {
                 foreach ($page->referredInPages as $referrer) {
                     $referrer->checked = false;
                     $referrer->mime_type = null;

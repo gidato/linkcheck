@@ -27,7 +27,7 @@
                     Rescan error pages
                 </a>
             @endif
-            @if ($scan->hasLinkErrors())
+            @if ($scan->hasLinkErrors()  || $scan->hasUnapprovedRedirects())
                 <a href="#" class="card-link"
                     v-on:click="form_submit($event,'rescan-referring-form-{{ $scan->id }}')">
                     Rescan referring pages

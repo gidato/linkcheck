@@ -14,7 +14,7 @@ class AddExceptionToPagesTable extends Migration
     public function up()
     {
         Schema::table('pages', function (Blueprint $table) {
-            $table->longText('exception');
+            $table->longText('exception')->nullable();
         });
     }
 

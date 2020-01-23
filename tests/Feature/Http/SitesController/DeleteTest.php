@@ -44,14 +44,17 @@ class DeleteTest extends TestCase
     }
 
     /** @test */
-    public function delete_valid_password()
+    public function delete_valid()
     {
         // confirm set up before start
         $this->assertEquals(1, \App\Site::count());
         $this->assertEquals(1, \App\Scan::count());
         $this->assertEquals(10, \App\Page::count());
+
+
         $response = $this->delete('sites/'. $this->site->id, ['password' => 'ValidPassword']);
         $response->assertRedirect();
+
         $this->assertEquals(0, \App\Site::count());
         $this->assertEquals(0, \App\Scan::count());
         $this->assertEquals(0, \App\Page::count());

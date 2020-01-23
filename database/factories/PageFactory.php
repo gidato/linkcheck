@@ -26,6 +26,7 @@ $factory->define(Page::class, function (Faker $faker) {
         'depth' => 1,
         'mime_type' => 'text/html',
         'status_code' => 200,
-        'html_errors' => '[]'
+        'html_errors' => '[]',
+        'exception' => ''
     ];
 });

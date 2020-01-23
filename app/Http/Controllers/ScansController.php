@@ -100,7 +100,7 @@ class ScansController extends Controller
 
     public function rescanReferrers(Scan $scan, Request $request, RescanReferrersScanGenerator $generator)
     {
-        if (!$scan->hasLinkErrors() && !$scan->hasWarnings()) {
+        if (!$scan->hasLinkErrors() && !$scan->hasUnapprovedRedirects()) {
             return redirect('sites.list');
         }
 
