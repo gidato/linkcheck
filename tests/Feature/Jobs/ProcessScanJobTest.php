@@ -39,4 +39,22 @@ class ProcessScanJobTest extends TestCase
         $job = new ProcessScan($scan);
         $job->handle($processor);
     }
+
+    /** @test */
+    public function scan_job_fails()
+    {
+        $exception = new \Exception('I\'m a failure');
+
+        $scan = Mockery::mock(Scan::class);
+        $scan->shouldReceive('setAttribute')->with('status', 'failed')->once();
+        $scan->shouldReceive('setAttribute')->with('message', 'Exception: I\'m a failure')->once();
+        $scan->shouldReceive('save')->once();
+
+        $processor = Mockery::mock(ScanProcessor::class);
+        $processor->shouldReceive('handle')->never();
+
+        $job = new ProcessScan($scan);
+        $job->failed($exception);
+
+    }
 }

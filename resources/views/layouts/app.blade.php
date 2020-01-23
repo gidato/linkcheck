@@ -25,7 +25,7 @@
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark ">
-            <div class="container">
+            <div class="@yield('title-bar','container')">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
@@ -52,6 +52,9 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('failed-jobs.list') }}">{{ __('Failed Jobs') }}</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('sites.list') }}">{{ __('Sites') }}</a>
                             </li>
@@ -84,7 +87,7 @@
 
         <main class="pb-4">
             <div class="container-fluid bg-white mb-3 border-bottom">
-                <div class="container">
+                <div class="@yield('title-bar','container')">
                     <div class="row">
                         <div class="col">
                             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2 ">
@@ -99,7 +102,7 @@
             </div>
 
             @if (session('success'))
-                <div class="container">
+                <div class="@yield('title-bar','container')">
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ session('success') }}
                     </div>
@@ -107,7 +110,7 @@
             @endif
 
             @if (session('error'))
-                <div class="container">
+                <div class="@yield('title-bar','container')">
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         {{ session('error') }}
                     </div>

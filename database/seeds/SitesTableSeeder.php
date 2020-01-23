@@ -16,7 +16,7 @@ class SitesTableSeeder extends Seeder
         DB::table('sites')->insert([
             'url' => SEED_SITE_1,
             'throttle' => 'default : default',
-            'validation_code' => '9f249064-c834-4523-b3fb-b9146dc386dc',
+            'validation_code' => SEED_SITE_1_VERIFICATION_CODE,
             'validated' => true,
             'created_at' => now(),
             'updated_at' => now()

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-<?php $colors = ['errors' => 'danger', 'warnings' => 'danger', 'queued' => 'orange', 'processing' => 'orange', 'success' => 'success', 'aborted' => 'danger']; ?>
+<?php $colors = ['failed' => 'danger', 'errors' => 'danger', 'warnings' => 'danger', 'queued' => 'orange', 'processing' => 'orange', 'success' => 'success', 'aborted' => 'danger']; ?>
 
 @section('title', 'Scans')
 

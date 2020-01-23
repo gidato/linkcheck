@@ -10,8 +10,10 @@ use App\Support\Service\Scan\RescanErrorsScanGenerator;
 use App\Support\Service\Scan\RescanReferrersScanGenerator;
 use App\Jobs\ProcessScan;
 use App\Jobs\SendEmail;
+use App\FailedJob;
 use Illuminate\Support\Facades\DB;
 use App\Support\Value\EmailOption;
+use Illuminate\Queue\QueueManager;
 
 class ScansController extends Controller
 {
@@ -39,6 +41,50 @@ class ScansController extends Controller
         $request->session()->flash('success', 'Scan queued');
         return back();
     }
+
+    /**
+     * try to restart a failed job for this scan
+     */
+    public function retry(Scan $scan, Request $request, QueueManager $queueManager)
+    {
+        $job = $this->findJobForScan($scan);
+        if (!$job) {
+            $request->session()->flash('error', 'Can\'t find failed job');
+            $scan->status = 'errors';
+            $scan->save();
+            return back();
+        }
+
+        $queueManager->connection($job->connection)->pushRaw(
+            json_encode($this->resetAttempts($job->payload)), $job->queue
+        );
+
+        $request->session()->flash('success', "The failed job has been pushed back onto the queue!");
+        $job->delete();
+        return back();
+    }
+
+    private function findJobForScan(Scan $scan) : ?FailedJob
+    {
+        return FailedJob::all()
+            ->filter(function($job) use ($scan) {
+                return ProcessScan::class == $job->jobName // same job
+                    && property_exists($job->command,'scan')
+                    && $job->command->scan->id == $scan->id // same scan
+                    && 1 > abs($job->failed_at->diffInSeconds($scan->updated_at)); // within a second of each other
+            })
+            ->first();
+    }
+
+    private function resetAttempts($payload)
+    {
+        if (isset($payload['attempts'])) {
+            $payload['attempts'] = 0;
+        }
+
+        return $payload;
+    }
+
 
     public function rescanErrors(Scan $scan, Request $request, RescanErrorsScanGenerator $generator)
     {

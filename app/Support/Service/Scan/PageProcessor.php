@@ -71,6 +71,7 @@ class PageProcessor implements PageProcessorInterface
             $page->status_code = $statusCode;
             $page->redirect = new Url($url);
             $page->checked = true;
+            $page->redirect_approved = !empty($page->scan->site->approvedRedirects->where('from_url',(string) $page->url)->where('to_url', $url));
             $page->save();
 
             $page = $this->linkInserter->linkFromPage($page, new Link(new Url($url), new RedirectReference()));

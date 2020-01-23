@@ -9,15 +9,21 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Scan;
 use App\Support\Service\Scan\ScanProcessor;
+use Illuminate\Queue\Jobs\Job;
+use Illuminate\Queue\Jobs\DatabaseJob;
+use Illuminate\Queue\Failed\FailedJobProviderInterface;
+use Exception;
 
 class ProcessScan implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     // seconds allowed to run the job
-    public $timeout = 20 * 60; // 20 seconds - each page takes a second due to one second delays between checks
+    public $timeout = 20 * 60; // 20 minutes - each page takes a second due to one second delays between checks
 
-    private $scan;
+    public $deleteWhenMissingModels = true;
+
+    public $scan;
 
     public function __construct(Scan $scan)
     {
@@ -31,15 +37,20 @@ class ProcessScan implements ShouldQueue
             return;
         }
 
+        // indicate we have started... 
         $this->scan->status = 'processing';
         $this->scan->save();
 
-        try {
-            $processor->handle($this->scan);
-        } catch (\Exception $e) {
-            $this->scan->status = 'errors';
-            $this->scan->message = 'Exception: '. $e->getMessage();
-            $this->scan->save();
-        }
+        $processor->handle($this->scan);
+    }
+
+    /**
+     * other errors, eg timeout;
+     */
+    public function failed(Exception $e)
+    {
+        $this->scan->status = 'failed';
+        $this->scan->message = 'Exception: '. $e->getMessage();
+        $this->scan->save();
     }
 }

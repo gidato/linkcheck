@@ -31,6 +31,11 @@ class Scan extends Model
         return ('success' == $this->status || 'errors' == $this->status || 'aborted' == $this->status || 'warnings' == $this->status);
     }
 
+    public function isFailed() : bool
+    {
+        return ('failed' == $this->status);
+    }
+
     public function hasLinkErrors() : bool
     {
         return ($this->getLinkErrors()->count() > 0);

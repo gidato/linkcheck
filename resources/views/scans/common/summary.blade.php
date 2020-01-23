@@ -1,6 +1,11 @@
 <div class="card-body">
     @if ($scan)
         @include('sites.common.not-verified', ['site' => $scan->site])
+        @if (!empty($scan->message))
+            <div class="alert alert-danger">
+                <strong>Error Message:</strong> {{ $scan->message }}
+            </div>
+        @endif
         @if ($scan->hasLinkErrors())
             <p>
                 The following link errors were found:

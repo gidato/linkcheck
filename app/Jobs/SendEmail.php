@@ -18,7 +18,7 @@ class SendEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $scan;
+    public $scan;
     private $email;
 
     public function __construct(Scan $scan, EmailOption $email)

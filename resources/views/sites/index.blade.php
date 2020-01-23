@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-<?php $colors = ['errors' => 'danger', 'warnings' => 'danger', 'queued' => 'orange', 'processing' => 'orange', 'success' => 'success', 'aborted' => 'danger']; ?>
+<?php $colors = ['failed' => 'danger', 'errors' => 'danger', 'warnings' => 'danger', 'queued' => 'orange', 'processing' => 'orange', 'success' => 'success', 'aborted' => 'danger']; ?>
 
 @section('title', 'Sites')
 @section('title-buttons')
@@ -35,6 +35,12 @@
                                     @csrf
                                     <input type="hidden" name="site_id" value="{{ $site->id }}">
                                     <button class="btn btn btn-orange mr-2">{{ __('NEW SCAN') }}</button>
+                                </form>
+                            @elseif ($scan && $scan->isFailed())
+                                <form action="{{ route('scans.retry', $scan) }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="site_id" value="{{ $site->id }}">
+                                    <button class="btn btn btn-orange mr-2">{{ __('RETRY') }}</button>
                                 </form>
                             @else
                                 <form action="{{ route('scans.abort', $scan) }}" method="POST">

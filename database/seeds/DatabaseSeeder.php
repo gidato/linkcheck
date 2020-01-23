@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
+use Ramsey\Uuid\Uuid;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -12,6 +14,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         define('SEED_SITE_1', env('DB_SEED_SITE_1', 'http://localhost/'));
+        define('SEED_SITE_1_VERIFICATION_CODE', env('DB_SEED_SITE_1_VERIFICATION_CODE', Uuid::uuid4()));
+
         define('SEED_SITE_2', env('DB_SEED_SITE_2', 'http://my.localhost/'));
         define('SEED_SITE_3', env('DB_SEED_SITE_3', 'http://localhost/landlord'));
 

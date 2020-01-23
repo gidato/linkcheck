@@ -88,5 +88,24 @@ const app = new Vue({
             document.getElementById(formId).submit();
         },
 
+        form_job_flush_confirmation(event, formId) {
+            event.preventDefault();
+            this.$bvModal.msgBoxConfirm('Please confirm that you want to delete all jobs', {
+                title: 'Please Confirm',
+                //size: 'lg',
+                buttonSize: 'sm',
+                okVariant: 'danger',
+                okTitle: 'CONFIRM',
+                cancelTitle: 'CANCEL',
+                footerClass: 'p-2',
+                hideHeaderClose: true,
+                centered: true
+            }).then(value => {
+                if (value) {
+                    document.getElementById(formId).submit();
+                }
+            });
+        },
+
     }
 });

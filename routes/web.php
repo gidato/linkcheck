@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('scans/{scan}', 'ScansController@show')->name('scans.show');
     Route::post('scans/{scan}/rescan-errors', 'ScansController@rescanErrors')->name('scans.rescan.errors');
     Route::post('scans/{scan}/rescan-referrers', 'ScansController@rescanReferrers')->name('scans.rescan.referrers');
+    Route::post('scans/{scan}/retry', 'ScansController@retry')->name('scans.retry');
     Route::delete('scans/{scan}', 'ScansController@delete')->name('scans.delete');
     Route::delete('scans', 'ScansController@deleteMany')->name('scans.delete.many');
     Route::post('scans/{scan}/email-self', 'ScansController@emailSelf')->name('scans.email.self');
@@ -53,5 +54,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('owners/{owner}/edit','OwnersController@edit')->name('owners.edit');
     Route::put('owners/{owner}','OwnersController@update')->name('owners.update');
 
+    Route::get('failed-jobs', 'FailedJobsController@index')->name('failed-jobs.list');
+    Route::delete('failed-jobs', 'FailedJobsController@flush')->name('failed-jobs.delete-all');
+    Route::get('failed-jobs/{job}', 'FailedJobsController@show')->name('failed-jobs.show');
+    Route::delete('failed-jobs/{job}', 'FailedJobsController@delete')->name('failed-jobs.delete');
+    Route::post('failed-jobs/{job}/retry', 'FailedJobsController@retry')->name('failed-jobs.retry');
 
 });

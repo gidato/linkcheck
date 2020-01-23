@@ -5,6 +5,7 @@ namespace Tests\Feature\Http\ScanController;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Mockery;
 
 class AbortScanTest extends TestCase
 {
@@ -47,6 +48,20 @@ class AbortScanTest extends TestCase
         $response->assertSessionHas('success','Scan aborted');
         $scan->refresh();
         $this->assertEquals('aborted', $scan->status);
+    }
+
+    /** @test */
+    public function successfully_not_abort_failed_scan()
+    {
+        $scan = factory(\App\Scan::class)->create(['site_id' => $this->site->id, 'status'=>'failed']);
+        factory(\App\Page::class,10)->create(['scan_id' => $scan->id]);
+
+        $response = $this->post('/scans/' . $scan->id . '/abort');
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success','Scan already completed');
+        $scan->refresh();
+        $this->assertEquals('failed', $scan->status);
     }
 
     /** @test */
