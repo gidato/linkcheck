@@ -9,6 +9,7 @@ use App\Support\Value\Reference\RedirectReference;
 use App\Support\Service\Scan\PageProcessorInterface;
 use App\Support\Service\HttpClient;
 use Psr\Http\Message\ResponseInterface as HttpResponse;
+use Symfony\Component\HttpFoundation\Response as Status;
 use App\Support\Service\Scan\ContentHandler\ContentHandlerManager;
 use App\Support\Service\LinkInserter;
 
@@ -30,21 +31,28 @@ class PageProcessor implements PageProcessorInterface
 
     public function handle(Page $page) : void
     {
-        switch ($page->method) {
-            case 'get':
-                $response = $this->httpClient->getPage($page);
-                break;
+        try {
+            switch ($page->method) {
+                case 'get':
+                    $response = $this->httpClient->getPage($page);
+                    break;
 
-            default:
-                throw new \Exception('Not implemented');
+                default:
+                    throw new \Exception('Not implemented');
+            }
+
+            if ($response->getStatusCode() == 200) {
+                // only handle redirects if the redirect was ultimately found
+                $page = $this->processRedirects($page, $response);
+            }
+
+            $page->status_code = $response->getStatusCode();
+        } catch (\Exception $e) {
+            // catches all other access errors
+            $page->status_code = Status::HTTP_NOT_ACCEPTABLE;
+            $page->exception = $e->getMessage();
         }
 
-        if ($response->getStatusCode() == 200) {
-            // only handle redirects if the redirect was ultimately found
-            $page = $this->processRedirects($page, $response);
-        }
-
-        $page->status_code = $response->getStatusCode();
         $page->checked = true;
         if ($page->status_code == 200) {
             $page->mime_type = $this->getContentType($response);

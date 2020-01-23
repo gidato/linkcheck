@@ -29,7 +29,9 @@
                 <td class="center">{{ $page->depth }}</td>
                 <td class="center">{{ Str::upper($page->method) }}</td>
                 <td class="center">
-                    @if (!$page->isError() && !$page->isRedirect())
+                    @if (!empty($page->exception))
+                        {{ $page->exception }}
+                    @elseif (!$page->isError() && !$page->isRedirect())
                         {{ $page->mime_type }}
                     @elseif ($page->isRedirect())
                         Redirected - {{ $page->getStatusText() }}

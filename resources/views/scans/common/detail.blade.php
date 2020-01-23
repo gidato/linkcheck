@@ -10,7 +10,7 @@
 
     @foreach ($pages as $page)
         <div class="mx-3 row  border-top">
-            <div class="col-md-7 py-2">
+            <div class="col-md-6 py-2">
                 <button class="dropdown collapsed btn btn-sq-xs btn-outline-secondary" data-toggle="collapse" data-target="#references-{{ $page->id }}">
                     <i class="las la-angle-down"></i>
                 </button>
@@ -30,6 +30,10 @@
                 <a href="{{ $page->url }}" target="_blank">{{ $page->getShortUrl() }}</a> <i class="las la-external-link-alt"></i>
                 @if ($page->isRedirect())
                     redirected to {{ $page->getShortRedirectUrl() }}
+                @endif
+            </div>
+            <div class="col-2">
+                @if ($page->isRedirect())
                     @if (!$page->redirect_approved)
                         <form class="d-inline-block" action="{{route('sites.redirects.approve', $site) }}" method="POST">
                             @csrf
@@ -44,9 +48,11 @@
                 @endif
             </div>
             <div class="col-2 col-md-1 text-center">{{ $page->depth }}</div>
-            <div class="col-4 col-md-1 text-center">{{ Str::upper($page->method) }}</div>
+            <div class="col-2 col-md-1 text-center">{{ Str::upper($page->method) }}</div>
             <div class="col-6 col-md-3 text-center">
-                @if (!$page->isError() && !$page->isRedirect())
+                @if (!empty($page->exception))
+                    {{ $page->exception }}
+                @elseif (!$page->isError() && !$page->isRedirect())
                     {{ $page->mime_type }}
                 @elseif ($page->isRedirect())
                     Redirected - {{ $page->getStatusText() }}

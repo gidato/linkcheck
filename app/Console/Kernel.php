@@ -59,6 +59,6 @@ class Kernel extends ConsoleKernel
             return strpos($var, $needle);
         });
 
-        return $result->count();
+        return count($result);
     }
 }
