@@ -25,7 +25,7 @@
             ])
         @endif
 
-        @if ($scan->hasLinkErrors())
+        @if ($scan->hasLinkErrors()  || $scan->hasUnapprovedRedirects())
             @include('common.hidden-form', [
                 'id' => 'rescan-referring-form-' . $scan->id ,
                 'action' => route('scans.rescan.referrers', $scan)
