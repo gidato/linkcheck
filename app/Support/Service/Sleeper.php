@@ -10,6 +10,6 @@ class Sleeper
 {
     public function sleep(int $microSeconds) : void
     {
-        usleep($microSeconds);
+        sleep(round($microSeconds/1000000, 0));
     }
 }

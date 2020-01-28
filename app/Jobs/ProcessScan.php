@@ -19,7 +19,7 @@ class ProcessScan implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     // seconds allowed to run the job
-    public $timeout = 20 * 60; // 20 minutes - each page takes a second due to one second delays between checks
+    public $timeout = 60 * 60; // 60 minutes - each page takes at least a second due to one second delays between checks
 
     public $deleteWhenMissingModels = true;
 
@@ -37,7 +37,7 @@ class ProcessScan implements ShouldQueue
             return;
         }
 
-        // indicate we have started... 
+        // indicate we have started...
         $this->scan->status = 'processing';
         $this->scan->save();
 
