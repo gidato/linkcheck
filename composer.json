@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "gidato/linkcheck",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Checks for broken links in web sites",
     "keywords": [
         "framework",
         "laravel"

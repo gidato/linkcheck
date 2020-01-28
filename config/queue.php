@@ -49,7 +49,7 @@ return [
             'driver' => 'database',
             'table' => 'jobs',
             'queue' => 'default',
-            'retry_after' => 20 * 60,
+            'retry_after' => 60 * 60,  /// long running to allow full site to be scanned.  May even need to be longer for some sites.
         ],
 
         'beanstalkd' => [
