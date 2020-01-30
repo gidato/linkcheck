@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Support\Service\Scan\ContentHandler\LinkExtractor\Html;
 
-use App\Support\Service\Container\Contract\FactoryContract;
+use Gidato\Container\Contract\FactoryContract;
 use Psr\Container\ContainerInterface;
 use App\Support\Service\UrlGenerator;
 

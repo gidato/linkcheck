@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\OwnersController;
+namespace Tests\Feature\Http\SitesController;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;

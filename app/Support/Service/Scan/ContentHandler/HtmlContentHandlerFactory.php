@@ -5,7 +5,7 @@ namespace App\Support\Service\Scan\ContentHandler;
 use Psr\Container\ContainerInterface;
 use App\Support\Service\Scan\ContentHandler\LinkExtractor\Html;
 use App\Support\Service\LinkInserter;
-use App\Support\Service\Container\Contract\FactoryContract;
+use Gidato\Container\Contract\FactoryContract;
 
 class HtmlContentHandlerFactory implements FactoryContract
 {

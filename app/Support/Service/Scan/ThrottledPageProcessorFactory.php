@@ -6,7 +6,7 @@ use Psr\Container\ContainerInterface;
 use App\Support\Service\Scan\PageProcessor;
 use App\Support\Service\Sleeper;
 use App\Support\Value\Throttle;
-use App\Support\Service\Container\Contract\FactoryContract;
+use Gidato\Container\Contract\FactoryContract;
 
 class ThrottledPageProcessorFactory implements FactoryContract
 {
