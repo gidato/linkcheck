@@ -14,27 +14,20 @@ trait FactoryBinding
 
     public function bindFromFactory($abstract, $factoryClass, $shared = false)
     {
-        $this->validateFactory($factoryClass);
         $this->bind(
             $abstract,
             function($container, $params = []) use ($abstract, $factoryClass) {
                 $factory = new $factoryClass;
+                $this->validateFactory($factory);
                 return $factory($container, $abstract, $params);
             },
             $shared
         );
     }
 
-    private function validateFactory(string $factoryClass)
+    private function validateFactory(FactoryContract $factory)
     {
-        $implements = class_implements($factoryClass);
-        if (empty($implements) || empty($implements[FactoryContract::class])) {
-            throw new \Exception(sprintf(
-                'Invalid container factory (%s) - Must implement %s',
-                $factoryClass,
-                FactoryContract::class
-            ));
-        }
+        // type hinting used to validate
     }
 
 
