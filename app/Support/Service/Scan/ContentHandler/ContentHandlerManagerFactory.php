@@ -3,9 +3,9 @@
 namespace App\Support\Service\Scan\ContentHandler;
 
 use Psr\Container\ContainerInterface;
-use App\Support\Service\Container\Contract\ContainerFactory;
+use App\Support\Service\Container\Contract\FactoryContract;
 
-class ContentHandlerManagerFactory implements ContainerFactory
+class ContentHandlerManagerFactory implements FactoryContract
 {
     public function __invoke(ContainerInterface $app, string $requestedName, array $params = [])
     {

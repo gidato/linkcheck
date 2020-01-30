@@ -5,9 +5,9 @@ namespace App\Support\Service\Scan\ContentHandler;
 use Psr\Container\ContainerInterface;
 use App\Support\Service\Scan\ContentHandler\LinkExtractor\Html;
 use App\Support\Service\LinkInserter;
-use App\Support\Service\Container\Contract\ContainerFactory;
+use App\Support\Service\Container\Contract\FactoryContract;
 
-class HtmlContentHandlerFactory implements ContainerFactory
+class HtmlContentHandlerFactory implements FactoryContract
 {
     public function __invoke(ContainerInterface $app, string $requestedName, array $params = [])
     {

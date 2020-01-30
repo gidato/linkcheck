@@ -6,5 +6,6 @@ use Illuminate\Foundation\Application as LaravelApplication;
 
 class Application extends LaravelApplication
 {
-    use ContainerExtensions;
+    use NestedContainers;
+    use FactoryBinding;
 }

@@ -6,5 +6,6 @@ use Illuminate\Container\Container as LaravelContainer;
 
 class Container extends LaravelContainer
 {
-    use ContainerExtensions;
+    use NestedContainers;
+    use FactoryBinding;
 }

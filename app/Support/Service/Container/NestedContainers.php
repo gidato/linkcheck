@@ -2,10 +2,9 @@
 
 namespace App\Support\Service\Container;
 
-use App\Support\Service\Container\Contract\ContainerFactory;
 use Illuminate\Container\Container as LaravelContainer;
 
-trait ContainerExtensions
+trait NestedContainers
 {
 
     private $parent;
@@ -57,26 +56,6 @@ trait ContainerExtensions
     public function getParent() : LaravelContainer
     {
         return $this->parent;
-    }
-
-    public function singletonFromFactory($abstract, $factoryClass)
-    {
-        $this->bindFromFactory($abstract, $factoryClass, true);
-    }
-
-    public function bindFromFactory($abstract, $factoryClass, $shared = false)
-    {
-        $this->bind(
-            $abstract,
-            function($container, $params = []) use ($abstract, $factoryClass) {
-                $factory = new $factoryClass;
-                if (!$factory instanceof ContainerFactory) {
-                    throw new \Exception('Invalid conatiner factory');
-                }
-                return $factory($container, $abstract, $params);
-            },
-            $shared
-        );
     }
 
     public function getAllBound() : array
