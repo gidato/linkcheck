@@ -37,7 +37,7 @@ class ScansController extends Controller
 
         $site = Site::findOrFail($validated['site_id']);
         $scan = $generator->generateScan($site);
-        ProcessScan::dispatch($scan);
+        ProcessScan::dispatch($scan)->onQueue('low');
         $request->session()->flash('success', 'Scan queued');
         return back();
     }
@@ -93,7 +93,7 @@ class ScansController extends Controller
         }
 
         $scan = $generator->generateScan($scan);
-        ProcessScan::dispatch($scan);
+        ProcessScan::dispatch($scan)->onQueue('low');
         $request->session()->flash('success', 'Scan queued');
         return back();
     }
@@ -105,7 +105,7 @@ class ScansController extends Controller
         }
 
         $scan = $generator->generateScan($scan);
-        ProcessScan::dispatch($scan);
+        ProcessScan::dispatch($scan)->onQueue('low');
         $request->session()->flash('success', 'Scan queued');
         return back();
     }
@@ -149,14 +149,14 @@ class ScansController extends Controller
 
     public function emailSelf(Scan $scan, Request $request)
     {
-        SendEmail::dispatch($scan, new EmailOption('self'));
+        SendEmail::dispatch($scan, new EmailOption('self'))->onQueue('high');
         $request->session()->flash('success', 'Email sent');
         return back();
     }
 
     public function emailAll(Scan $scan, Request $request)
     {
-        SendEmail::dispatch($scan, new EmailOption('all'));
+        SendEmail::dispatch($scan, new EmailOption('all'))->onQueue('high');
         $request->session()->flash('success', 'Email sent');
         return back();
     }

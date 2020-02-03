@@ -18,8 +18,8 @@ class ProcessScan implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    // seconds allowed to run the job
-    public $timeout = 60 * 60; // 60 minutes - each page takes at least a second due to one second delays between checks
+    // job gets pushed back to queue for each throttle delay (which is probably each page), so allow for plenty
+    public $tries = 100000;
 
     public $deleteWhenMissingModels = true;
 
@@ -39,9 +39,13 @@ class ProcessScan implements ShouldQueue
 
         // indicate we have started...
         $this->scan->status = 'processing';
+        $this->scan->message = '';
         $this->scan->save();
 
-        $processor->handle($this->scan);
+        $releaseAndDelay = $processor->handle($this->scan);
+        if (null !== $releaseAndDelay) {
+            $this->release($releaseAndDelay);
+        }
     }
 
     /**

@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
         if ($this->howManyTimesIsOsProcessIsRunning('queue:work') < config('queue.workers')) {
             // this will only run, when not already running
             // and locks up the command, so probably should go last in the list of scheduled jobs
-            $schedule->command('queue:work')->everyMinute();
+            $schedule->command('queue:work', ['--tries' => 3, '--queue' => 'high,default,low'])->everyMinute();
         }
     }
 

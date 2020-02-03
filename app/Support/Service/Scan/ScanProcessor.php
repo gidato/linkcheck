@@ -4,7 +4,7 @@ namespace App\Support\Service\Scan;
 
 use App\Scan;
 use App\Page;
-use App\Support\Service\Scan\ThrottledPageProcessor;
+use App\Support\Service\Scan\PageProcessor;
 use App\Support\Service\SiteValidation\SiteValidator;
 use App\Support\Service\Scan\Filter\FilterManager;
 
@@ -22,16 +22,21 @@ class ScanProcessor
 
 
     public function __construct(
-        ThrottledPageProcessor $pageProcessor,
+        PageProcessor $pageProcessor,
         SiteValidator $siteValidator,
-        FilterManager $filterManager
+        FilterManager $filterManager,
+        ThrottleManager $throttleManager
     ){
         $this->pageProcessor = $pageProcessor;
         $this->siteValidator = $siteValidator;
         $this->filterManager = $filterManager;
+        $this->throttleManager = $throttleManager;
     }
 
-    public function handle(Scan $scan)
+    /**
+     * returns a delay if all pages are being delayed
+     */
+    public function handle(Scan $scan) : ?int
     {
         $site = $scan->site;
         $response = $this->siteValidator->validate($site);
@@ -42,11 +47,18 @@ class ScanProcessor
 
             $site->validated = false;
             $site->save();
-            return;
+            return null;
         }
 
-        while($page = $this->getPageToProcess($scan)) {
+        $pagesToProcess = $this->getPagesToProcess($scan);
+        while ($pagesToProcess && $pagesToProcess->count() > 0) {
+            $page = $this->getPageAtLowestDepthReadyToProcess($pagesToProcess);
+            if (!$page) {
+                return $this->getShortestDelayPossible($pagesToProcess);
+            }
+            $this->throttleManager->recordAccessingDomainNow($page);
             $this->pageProcessor->handle($page);
+            $pagesToProcess = $this->getPagesToProcess($scan);
         }
 
         if (!$scan->hasBeenAborted()) {
@@ -59,16 +71,42 @@ class ScanProcessor
             }
             $scan->save();
         }
+
+        return null;
     }
 
-    private function getPageToProcess(Scan $scan) : ?Page
+    private function getPageAtLowestDepthReadyToProcess($pages) : ?Page
+    {
+        $depth = $pages->first()->depth;
+        foreach($pages->where('depth', $depth)->get() as $page) {
+            if (!$this->throttleManager->shouldThrottle($page)) {
+                return $page;
+            }
+        }
+        return null;
+    }
+
+    private function getShortestDelayPossible($pages) : int
+    {
+        $depth = $pages->first()->depth;
+        $smallestDelay = 1000000; // a long time
+        foreach( $pages->where('depth', $depth)->get() as $page) {
+            $delay = $this->throttleManager->throttleDelay($page);
+            if ($delay < $smallestDelay) {
+                $smallestDelay = $delay;
+            }
+        }
+        return $smallestDelay;
+    }
+
+    private function getPagesToProcess(Scan $scan)
     {
         $scan->refresh();
         if ($scan->hasBeenAborted()) {
             return null;
         }
 
-        // only ever process get pages, as anything else should change the database, and we don't want that
+        // only ever process "get" and not "post" pages, etc. as anything else should change the database, and we don't want that
         $pages = Page::where('scan_id', $scan->id)
             ->where('checked', false)
             ->where('method', 'get')
@@ -78,6 +116,6 @@ class ScanProcessor
             $pages = $this->filterManager->filter($pages, $scan, $filter);
         }
 
-        return $pages->first();
+        return $pages;
     }
 }

@@ -8,6 +8,7 @@ use Tests\TestCase;
 use App\Scan;
 use App\Jobs\ProcessScan;
 use App\Support\Service\Scan\ScanProcessor;
+use Illuminate\Queue\Jobs\DatabaseJob;
 use Mockery;
 
 class ProcessScanJobTest extends TestCase
@@ -18,12 +19,17 @@ class ProcessScanJobTest extends TestCase
         $scan = Mockery::mock(Scan::class);
         $scan->shouldReceive('hasBeenAborted')->once()->andReturn(false);
         $scan->shouldReceive('setAttribute')->once()->with('status', 'processing');
+        $scan->shouldReceive('setAttribute')->once()->with('message', '');
         $scan->shouldReceive('save')->once();
 
         $processor = Mockery::mock(ScanProcessor::class);
-        $processor->shouldReceive('handle')->with($scan);
+        $processor->shouldReceive('handle')->with($scan)->andReturn(null);
+
+        $databaseJob = Mockery::mock(DatabaseJob::class);
+        $databaseJob->shouldReceive('release')->never();
 
         $job = new ProcessScan($scan);
+        $job->setJob($databaseJob);
         $job->handle($processor);
     }
 
@@ -36,7 +42,31 @@ class ProcessScanJobTest extends TestCase
         $processor = Mockery::mock(ScanProcessor::class);
         $processor->shouldReceive('handle')->never();
 
+        $databaseJob = Mockery::mock(DatabaseJob::class);
+        $databaseJob->shouldReceive('release')->never();
+
         $job = new ProcessScan($scan);
+        $job->setJob($databaseJob);
+        $job->handle($processor);
+    }
+
+    /** @test */
+    public function scan_requires_delay()
+    {
+        $scan = Mockery::mock(Scan::class);
+        $scan->shouldReceive('hasBeenAborted')->once()->andReturn(false);
+        $scan->shouldReceive('setAttribute')->once()->with('status', 'processing');
+        $scan->shouldReceive('setAttribute')->once()->with('message', '');
+        $scan->shouldReceive('save')->once();
+
+        $processor = Mockery::mock(ScanProcessor::class);
+        $processor->shouldReceive('handle')->with($scan)->andReturn(5);
+
+        $databaseJob = Mockery::mock(DatabaseJob::class);
+        $databaseJob->shouldReceive('release')->with(5)->once();
+
+        $job = new ProcessScan($scan);
+        $job->setJob($databaseJob);
         $job->handle($processor);
     }
 
@@ -53,7 +83,11 @@ class ProcessScanJobTest extends TestCase
         $processor = Mockery::mock(ScanProcessor::class);
         $processor->shouldReceive('handle')->never();
 
+        $databaseJob = Mockery::mock(DatabaseJob::class);
+        $databaseJob->shouldReceive('release')->never();
+
         $job = new ProcessScan($scan);
+        $job->setJob($databaseJob);
         $job->failed($exception);
 
     }

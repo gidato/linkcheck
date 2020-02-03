@@ -5,8 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Support\Service\Scan\ContentHandler\ContentHandlerManager;
 use App\Support\Service\Scan\ContentHandler\ContentHandlerManagerFactory;
-use App\Support\Service\Scan\ThrottledPageProcessor;
-use App\Support\Service\Scan\ThrottledPageProcessorFactory;
+use App\Support\Service\Scan\ThrottleManager;
+use App\Support\Service\Scan\ThrottleManagerFactory;
 use App\Support\Service\Scan\Filter\FilterManager;
 use App\Support\Service\Scan\Filter\FilterManagerFactory;
 use App\Support\Service\Scan\Filter\InternalOnly;
@@ -23,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singletonFromFactory(ContentHandlerManager::class, ContentHandlerManagerFactory::class);
-        $this->app->singletonFromFactory(ThrottledPageProcessor::class, ThrottledPageProcessorFactory::class);
+        $this->app->singletonFromFactory(ThrottleManager::class, ThrottleManagerFactory::class);
         $this->app->singletonFromFactory(FilterManager::class, FilterManagerFactory::class);
         $this->app->container('scan-filters')->singleton('internal-only', InternalOnly::class);
         $this->app->container('scan-filters')->singleton('max-depth', Depth::class);
