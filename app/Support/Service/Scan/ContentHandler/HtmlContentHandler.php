@@ -55,6 +55,20 @@ class HtmlContentHandler implements ContentHandlerInterface
         $this->domDocument->loadHTML($content);
         $this->recordErrorsForPage($page);
 
+        // TEMPORARY TESTING
+        if (!empty($page->html_errors) && $page->html_errors != '[]') {
+            try {
+                $filename = $page->scan->id . '__' . str_replace('/','\\',$page->getShortUrl()).'.html';
+                if (!is_dir(storage_path('app/html_errors'))) {
+                    mkdir(storage_path('app/html_errors'), 0755, true);
+                }
+                file_put_contents(storage_path('app/html_errors') . '/' . $filename, $content);
+            } catch (\Throwable $e) {
+                // ignore any issues;
+            }
+        }
+        // END OF TEMPORARY TESTING
+
         $xPath = new DOMXPath($this->domDocument);
         $basePath = $basePath ?? $this->getBasePath($page, $xPath);
 

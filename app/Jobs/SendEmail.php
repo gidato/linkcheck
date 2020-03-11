@@ -42,9 +42,7 @@ class SendEmail implements ShouldQueue
 
         if ($this->email->all) {
             $mailer = $mailer->bcc(User::first());
-            foreach($site->owners as $owner) {
-                $mailer = $mailer->to($owner);
-            }
+            $mailer = $mailer->to($site->owners);
         }
 
         if ($this->email->self) {

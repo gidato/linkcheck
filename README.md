@@ -16,8 +16,6 @@ The report can be emailed with only errors/issues directly visible in the email,
 #### Installation
 
 Clone from github, set the config (database, email, throttling limits, garbage collection, etc).
-Run the migration, and set up a seed to add a user.  They can then reset their password
-using the normal Laravel functions for "lost password".
 
 The scans are completed in Queued Jobs within Laravel, so the queue needs to be set up.
 
