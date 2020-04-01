@@ -52,6 +52,7 @@ class HtmlContentHandler implements ContentHandlerInterface
 
     public function handle(Page $page, string $content, ?Path $basePath = null) : void
     {
+        libxml_clear_errors();
         $this->domDocument->loadHTML($content);
         $this->recordErrorsForPage($page);
 
