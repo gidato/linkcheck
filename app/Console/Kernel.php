@@ -48,8 +48,7 @@ class Kernel extends ConsoleKernel
         require base_path('routes/console.php');
     }
 
-
-    protected function howManyTimesIsOsProcessIsRunning($needle) : bool
+    protected function howManyTimesIsOsProcessIsRunning($needle) : int
     {
         // get process status. the "-ww"-option is important to get the full output!
         exec('ps aux -ww', $process_status);
